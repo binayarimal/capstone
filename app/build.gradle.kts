@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     id("org.jetbrains.kotlin.android")
+    id("com.google.gms.google-services")
 }
 //sync
 android {
@@ -42,7 +43,8 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.gridlayout)
-    implementation("androidx.core:core-ktx:+")
+    implementation("androidx.core:core-ktx:1.15.0")
+    implementation(libs.firebase.database)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

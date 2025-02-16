@@ -2,6 +2,7 @@ package com.example.mobileapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -23,10 +24,12 @@ class add_event : AppCompatActivity() {
         eventButton = findViewById(R.id.eventButton)
         eventDate = findViewById(R.id.event_date)
         eventData = findViewById(R.id.event_data)
-        db = databaseHelper(this)
+        db = databaseHelper()
         eventButton?.setOnClickListener(View.OnClickListener {
+
             val event = eventData?.getText().toString()
             val date = eventDate?.getText().toString()
+
             if (event.isEmpty() or date.isEmpty()) {
                 Toast.makeText(this@add_event, "Empty event or date", Toast.LENGTH_LONG).show()
             } else if (!checkDate(date)) {
@@ -37,18 +40,22 @@ class add_event : AppCompatActivity() {
                 ).show()
             } else {
                 // Add event to database if user input is valid
-                val findData = db!!.insertEventData(event, date)
-                if (findData) {
-                    //Navigate to events page
-                    val intent = Intent(this@add_event, events::class.java)
-                    this@add_event.startActivity(intent)
-                    Toast.makeText(this@add_event, "Event Added", Toast.LENGTH_LONG).show()
-                } else {
-                    Toast.makeText(
-                        this@add_event,
-                        "Error occured while trying to add event",
-                        Toast.LENGTH_LONG
-                    ).show()
+                db?.insertEventData(event, date) { success ->
+                    if (success) {
+                        println("Event added successfully!")
+                        val intent4 = Intent(this@add_event, events::class.java)
+                        this@add_event.startActivity(intent4)
+                        Toast.makeText(this@add_event, "Event Added", Toast.LENGTH_LONG).show()
+                        finish()
+                    } else {
+                        println("Failed to add event.")
+                        Log.e("Success", "success")
+                        Toast.makeText(
+                            this@add_event,
+                            "Error occured while trying to add event",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
                 }
             }
         })

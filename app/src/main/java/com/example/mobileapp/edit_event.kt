@@ -25,12 +25,12 @@ class edit_event : AppCompatActivity() {
 
 
         //Update event in database
-        db = databaseHelper(this)
+        db = databaseHelper()
         editEventButton?.setOnClickListener(View.OnClickListener {
             val event = editEvent?.getText().toString()
             val date = editDate?.getText().toString()
-            val updated = db!!.updateEvent(eventId, event, date)
-            if (updated) {
+            val updated = db?.updateEvent(eventId.toString(), event, date);
+            if (updated == true) {
                 Toast.makeText(this@edit_event, "Update Successful", Toast.LENGTH_LONG).show()
                 val intent = Intent(this@edit_event, events::class.java)
                 this@edit_event.startActivity(intent)
